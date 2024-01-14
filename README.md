@@ -14,15 +14,14 @@
 - Any Browser
 - Windows, macOS, or Linux operating system
 
-
 1. Clone the repository:
    (Open terminal or command prompt and type the following commands)
 
 git clone https://github.com/Kalirajm01/alumni_application.git
 
-cd alumni-application
+cd alumni_application
 
-cd alumni-application-frontend
+cd alumni2k24
 
 npm install
 
