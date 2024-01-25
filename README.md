@@ -21,7 +21,7 @@ git clone https://github.com/Kalirajm01/alumni_application.git
 
 cd alumni_application
 
-cd alumni2k24
+cd alumni
 
 npm install
 
