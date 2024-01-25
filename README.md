@@ -26,3 +26,14 @@ cd alumni
 npm install
 
 npm start
+
+2. Component can be viewed:
+   (Open browser and type the following commands after npm start)
+
+localhost:3000/home
+localhost:3000/signin
+localhost:3000/signup
+localhost:3000/about
+localhost:3000/events
+localhost:3000/intern
+localhost:3000/job
