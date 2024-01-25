@@ -22,6 +22,11 @@ app.get('/forget', function(req, res) {
   res.render('pages/forget');
 });
 
+// home page
+app.get('/home', function(req, res) {
+  res.render('pages/home');
+});
+
 // about page
 app.get('/about', function(req, res) {
   res.render('pages/about');
