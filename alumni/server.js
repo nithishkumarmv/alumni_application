@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 app.use(express.static(__dirname + "/public"));
+const dotenv = require('dotenv');
+
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -57,5 +59,5 @@ app.get('/gallery', function(req, res) {
   res.render('pages/gallery');
 });
 
-app.listen(3000);
-console.log('Server is listening on port 3000');
+app.listen(4000);
+console.log('Server is listening on port 4000');
