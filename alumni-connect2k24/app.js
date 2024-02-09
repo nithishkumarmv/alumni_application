@@ -14,13 +14,6 @@ const MONGODB_URI = 'mongodb://localhost:27017/alumini';
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
-// Connect to MongoDB
-MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(client => {
-        console.log('Connected to MongoDB');
-        const db = client.db('alumini');
-        const usersCollection = db.collection('login');
-    });
 // Define usersCollection globally
 let usersCollection;
 
