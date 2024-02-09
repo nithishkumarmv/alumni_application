@@ -4,6 +4,37 @@ const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3000;
 app.use(express.static('public'));
+//signup and signin
+const bodyParser = require('body-parser');
+const { MongoClient } = require('mongodb');
+const bcrypt = require('bcrypt');
+const MONGODB_URI = 'mongodb://localhost:27017/alumini';
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+
+// Connect to MongoDB
+MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(client => {
+        console.log('Connected to MongoDB');
+        const db = client.db('alumini');
+        const usersCollection = db.collection('login');
+    });
+// Define usersCollection globally
+let usersCollection;
+
+// Connect to MongoDB
+MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(client => {
+        console.log('Connected to MongoDB');
+        const db = client.db('alumini');
+        usersCollection = db.collection('login'); // Assign usersCollection here
+    })
+    .catch(error => {
+        console.error('Error connecting to MongoDB:', error);
+    });
+
 
 // Set view engine
 app.set('view engine', 'ejs');
@@ -21,6 +52,31 @@ app.set('pages', path.join(__dirname, './views/pages'));
 app.get('/', (req, res) => {
     res.render('signin');
 });
+                // Route to handle login or singin form submission
+                app.post('/signin', async (req, res) => {
+                    try {
+                        const { username, password } = req.body;
+        
+                        // Find the user by username
+                        const user = await usersCollection.findOne({ username });
+        
+                        if (!user) {
+                            return res.status(404).send('User not found');
+                        }
+        
+                        // Verify the password
+                        const isPasswordValid = await bcrypt.compare(password, user.password);
+        
+                        if (isPasswordValid) {
+                            res.send('Login successful!');
+                        } else {
+                            res.status(401).send('Invalid password');
+                        }
+                    } catch (err) {
+                        console.error('Error logging in:', err);
+                        res.status(500).send('Internal server error');
+                    }
+                });
 
 //Forget Password Page route
 app.get('/forget', (req, res) => {
@@ -31,6 +87,36 @@ app.get('/forget', (req, res) => {
 app.get('/signup', (req, res) => {
     res.render('signup');
 });
+        // routes (signup) go here...
+        app.post('/signup', async (req, res) => {
+            try {
+                // Extract username and password from request body
+                const { username, password } = req.body;
+
+                // Check if user already exists
+                const existingUser = await usersCollection.findOne({ username });
+                if (existingUser) {
+                    // User already exists, return error
+                    return res.status(400).send('User already exists');
+                }
+
+                // Hash the password
+                const hashedPassword = await bcrypt.hash(password, 10);
+
+                // Save user details to the database
+                await usersCollection.insertOne({
+                    username,
+                    password: hashedPassword
+                });
+
+                // Signup successful, send success response
+                res.send('User signed up successfully!');
+            } catch (error) {
+                // Handle errors
+                console.error('Error signing up:', error);
+                res.status(500).send('Internal server error');
+            }
+        });
 
 //DevOps Page route
 app.get('/devops', (req, res) => {
