@@ -2,13 +2,19 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.use(express.static('public'));
 //signup and signin
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcrypt');
-const MONGODB_URI = 'mongodb://localhost:27017/alumini';
+const MONGODB_URI = 'mongodb+srv://d22z702:nithish@cluster1.3lxpleh.mongodb.net/?retryWrites=true&w=majority';
+
+// Start the server
+app.listen(PORT, '127.0.0.1', () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
